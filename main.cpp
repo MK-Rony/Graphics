@@ -7,6 +7,23 @@
 
 using namespace std;
 
+GLint plane_position = 0;
+GLint boat_position = 0;
+GLint boat_far_position = 0;
+GLint sun_position = 0;
+
+GLint cloud1_position = 0;
+GLint cloud2_position = 0;
+GLint cloud3_position = 0;
+
+GLint boat_speed = 6;
+GLint boat_far_speed = 2;
+GLint plane_speed = 10;
+
+float _rain = 0.0f;
+bool rainday = false;
+bool night = false;
+
 void circle(float x, float y, float radius, float height)
 {
     int triangleAmount = 360;
@@ -16,6 +33,43 @@ void circle(float x, float y, float radius, float height)
         glVertex2f(x + (radius * cos(i * 2 * 3.1416 / triangleAmount)), y + (height * sin(i * 2 * 3.1416 / triangleAmount)));
     glEnd();
 }
+
+void fire(float Tx = 0, float Ty = 0)
+{
+   // glClear(GL_COLOR_BUFFER_BIT);
+    glColor3ub(255, 140, 0);
+   // glPointSize(5.0);
+    glBegin(GL_TRIANGLES);
+    glVertex2f(Tx + 70, Ty + 70);
+    glVertex2f(Tx + 35, Ty + 0);
+    glVertex2f(Tx + 105, Ty + 0);
+
+    glVertex2f(Tx + 42, Ty + 52.5);
+    glVertex2f(Tx + 7, Ty + 0);
+    glVertex2f(Tx + 77, Ty + 0);
+
+    glVertex2f(Tx + 112, Ty + 52.5);
+    glVertex2f(Tx + 77, Ty + 0);
+    glVertex2f(Tx + 147, Ty + 0);
+
+    glColor3ub(240, 240, 0);
+    glVertex2f(Tx + 43.75, Ty + 26.25);
+    glVertex2f(Tx + 17.5, Ty + 0);
+    glVertex2f(Tx + 52.5, Ty + 0);
+
+    glVertex2f(Tx + 78.75,Ty + 26.25);
+    glVertex2f(Tx + 52.5,Ty + 0);
+    glVertex2f(Tx + 87.5,Ty + 0);
+
+    glVertex2f(Tx + 113.75, Ty + 26.25);
+    glVertex2f(Tx + 87.5,Ty + 0);
+    glVertex2f(Tx + 122.5,Ty + 0);
+
+    glEnd();
+    glFlush();
+
+}
+
 
 void sky()
 {
@@ -48,7 +102,7 @@ void mountain()
 {
     //Rear mountain
     glBegin(GL_POLYGON);
-    glColor3ub (16, 133, 16);
+    glColor3ub(16, 133, 16);
     glVertex2f(387, 500);
     glVertex2f(387, 760);
     glVertex2f(348, 765);
@@ -80,8 +134,8 @@ void mountain()
     glVertex2f(901, 771);
     glVertex2f(916, 757);
     glVertex2f(945, 782);
-    glVertex2f(1002,737);
-    glVertex2f(1024,745);
+    glVertex2f(1002, 737);
+    glVertex2f(1024, 745);
     glVertex2f(1024, 745);
     glVertex2f(1084, 712);
     glVertex2f(1096, 718);
@@ -113,7 +167,7 @@ void mountain()
 
     //Rear mountain shadow light
     glBegin(GL_POLYGON);
-    glColor3ub (43, 189, 43);
+    glColor3ub(43, 189, 43);
     glVertex2f(11, 678);
     glVertex2f(19, 706);
     glVertex2f(54, 710);
@@ -212,7 +266,7 @@ void mountain()
 
     //Front mountain
     glBegin(GL_POLYGON);
-    glColor3ub (12, 105, 12);
+    glColor3ub(12, 105, 12);
     glVertex2f(0, 500);
     glVertex2f(0, 600);
     glVertex2f(40, 590);
@@ -278,7 +332,7 @@ void mountain()
 
     //Front mountain shadow light
     glBegin(GL_POLYGON);
-    glColor3ub (45, 189, 45);
+    glColor3ub(45, 189, 45);
     glVertex2f(80, 590);
     glVertex2f(90, 690);
     glVertex2f(101, 670);
@@ -515,10 +569,10 @@ void ground()
 
     //near ground
     glBegin(GL_QUADS);
-    glVertex2f(0,0);
-    glVertex2f(1920,0);
-    glVertex2f(1920,400);
-    glVertex2f(0,400);
+    glVertex2f(0, 0);
+    glVertex2f(1920, 0);
+    glVertex2f(1920, 400);
+    glVertex2f(0, 400);
     glEnd();
 }
 
@@ -960,18 +1014,18 @@ void house3(float Tx = 0, float Ty = 0, float m = 1)
     //side wall
     glBegin(GL_QUADS);
     glColor3ub(103, 71, 245);
-    glVertex2f(Tx + m * 40, Ty + m *0);
-    glVertex2f(Tx + m * 101, Ty + m *0);
-    glVertex2f(Tx + m * 101, Ty + m *45);
-    glVertex2f(Tx + m * 40, Ty + m *45);
+    glVertex2f(Tx + m * 40, Ty + m * 0);
+    glVertex2f(Tx + m * 101, Ty + m * 0);
+    glVertex2f(Tx + m * 101, Ty + m * 45);
+    glVertex2f(Tx + m * 40, Ty + m * 45);
 
     //roof
     glBegin(GL_QUADS);
     glColor3ub(140, 115, 255);
-    glVertex2f(Tx + m * 20, Ty + m *74);
-    glVertex2f(Tx + m * 40, Ty + m *45);
-    glVertex2f(Tx + m * 101, Ty + m *45);
-    glVertex2f(Tx + m * 81, Ty + m *74);
+    glVertex2f(Tx + m * 20, Ty + m * 74);
+    glVertex2f(Tx + m * 40, Ty + m * 45);
+    glVertex2f(Tx + m * 101, Ty + m * 45);
+    glVertex2f(Tx + m * 81, Ty + m * 74);
 
     //windows
     glBegin(GL_QUADS);
@@ -983,14 +1037,14 @@ void house3(float Tx = 0, float Ty = 0, float m = 1)
 
     glBegin(GL_QUADS);
     glColor3ub(5, 19, 26);
-    glVertex2f(Tx + m * 45, Ty + m *13);
-    glVertex2f(Tx + m * 55, Ty + m *13);
-    glVertex2f(Tx + m * 55, Ty + m *27);
-    glVertex2f(Tx + m * 45, Ty + m *27);
-    glVertex2f(Tx + m * 85, Ty + m *13);
-    glVertex2f(Tx + m * 95, Ty + m *13);
-    glVertex2f(Tx + m * 95, Ty + m *27);
-    glVertex2f(Tx + m * 85, Ty + m *27);
+    glVertex2f(Tx + m * 45, Ty + m * 13);
+    glVertex2f(Tx + m * 55, Ty + m * 13);
+    glVertex2f(Tx + m * 55, Ty + m * 27);
+    glVertex2f(Tx + m * 45, Ty + m * 27);
+    glVertex2f(Tx + m * 85, Ty + m * 13);
+    glVertex2f(Tx + m * 95, Ty + m * 13);
+    glVertex2f(Tx + m * 95, Ty + m * 27);
+    glVertex2f(Tx + m * 85, Ty + m * 27);
 
     //door
     glBegin(GL_QUADS);
@@ -1003,17 +1057,17 @@ void house3(float Tx = 0, float Ty = 0, float m = 1)
     //chimney left
     glBegin(GL_QUADS);
     glColor3ub(39, 7, 94);
-    glVertex2f(Tx + m * 44, Ty + m *66);
-    glVertex2f(Tx + m * 48, Ty + m *61);
-    glVertex2f(Tx + m * 48, Ty + m *78);
-    glVertex2f(Tx + m * 44, Ty + m *78);
+    glVertex2f(Tx + m * 44, Ty + m * 66);
+    glVertex2f(Tx + m * 48, Ty + m * 61);
+    glVertex2f(Tx + m * 48, Ty + m * 78);
+    glVertex2f(Tx + m * 44, Ty + m * 78);
 
     //chimney front
     glBegin(GL_QUADS);
     glColor3ub(92, 14, 227);
-    glVertex2f(Tx + m * 48, Ty + m *61);
-    glVertex2f(Tx + m * 55, Ty + m *61);
-    glVertex2f(Tx + m * 55, Ty + m *78);
+    glVertex2f(Tx + m * 48, Ty + m * 61);
+    glVertex2f(Tx + m * 55, Ty + m * 61);
+    glVertex2f(Tx + m * 55, Ty + m * 78);
     glVertex2f(Tx + m * 48, Ty + m * 78);
     glEnd();
 }
@@ -1097,31 +1151,37 @@ void boat(float Tx = 0, float Ty = 0, float m = 1)
     glEnd();
 
     //Boat Sail
+    if(night) glColor3ub (189, 189, 58); ///if night is true then color will change in night mode, repeat for boat
+    else  glColor3ub(255, 255, 171); ///if night is false then color will be the same in day
     glBegin(GL_TRIANGLES);
-    glColor3ub(255, 255, 171);
-    glVertex2f(Tx + m * 62, Ty + m *121);
-    glVertex2f(Tx + m * 2, Ty + m *27);
-    glVertex2f(Tx + m * 62, Ty + m *27);
+    //glColor3ub(255, 255, 171);
+    glVertex2f(Tx + m * 62, Ty + m * 121);
+    glVertex2f(Tx + m * 2, Ty + m * 27);
+    glVertex2f(Tx + m * 62, Ty + m * 27);
 
     //Boat Sail
-    glColor3ub(255, 255, 122);
-    glVertex2f(Tx + m * 63, Ty + m *163);
-    glVertex2f(Tx + m * 66, Ty + m *14);
-    glVertex2f(Tx + m * 121, Ty + m *47);
+    if(night) glColor3ub (181, 181, 31); ///if night is true then color will change in night mode, repeat for boat
+    else  glColor3ub(255, 255, 122); ///if night is false then color will be the same in day
+    //glColor3ub(255, 255, 122);
+    glVertex2f(Tx + m * 63, Ty + m * 163);
+    glVertex2f(Tx + m * 66, Ty + m * 14);
+    glVertex2f(Tx + m * 121, Ty + m * 47);
 
     //Boat pole
     glColor3ub(10, 24, 32);
-    glVertex2f(Tx + m * 63, Ty + m *163);
-    glVertex2f(Tx + m * 62, Ty + m *13);
-    glVertex2f(Tx + m * 66, Ty + m *13);
+    glVertex2f(Tx + m * 63, Ty + m * 163);
+    glVertex2f(Tx + m * 62, Ty + m * 13);
+    glVertex2f(Tx + m * 66, Ty + m * 13);
     glEnd();
 }
 
 void tent(float Tx = 0, float Ty = 0, float m = 3)
 {
     //Top
+    if(night) glColor3ub (171, 94, 58); ///if night is true then color will change in night mode, repeat for boat
+    else  glColor3ub (247,114,53); ///if night is false then color will be the same in day
     glBegin(GL_POLYGON);
-    glColor3ub (247,114,53);
+    //glColor3ub (247,114,53);
     glVertex2f(Tx + m * 100, Ty + m * 110);
     glVertex2f(Tx + m * 160, Ty + m * 100);
     glVertex2f(Tx + m * 200, Ty + m * 170);
@@ -1129,8 +1189,10 @@ void tent(float Tx = 0, float Ty = 0, float m = 3)
     glEnd();
 
     //triangle
+    if(night) glColor3ub (158, 102, 43); ///if night is true then color will change in night mode, repeat for boat
+    else  glColor3ub (255,180,100); ///if night is false then color will be the same in day
     glBegin(GL_POLYGON);
-    glColor3ub (255,180,100);
+    //glColor3ub (255,180,100);
     glVertex2f(Tx + m * 165, Ty + m * 99);
     glVertex2f(Tx + m * 220, Ty + m * 108);
     glVertex2f(Tx + m * 200, Ty + m * 170);
@@ -1219,8 +1281,10 @@ void tent(float Tx = 0, float Ty = 0, float m = 3)
 
 
     //middle
+    if(night) glColor3ub (158, 102, 43); ///if night is true then color will change in night mode, repeat for boat
+    else  glColor3ub (255,180,100); ///if night is false then color will be the same in day
     glBegin(GL_POLYGON);
-    glColor3ub (94,57,31);
+    //glColor3ub (94,57,31);
     glVertex2f(Tx + m * 200, Ty + m * 180);
     glVertex2f(Tx + m * 200, Ty + m * 110);
     glVertex2f(Tx + m * 201, Ty + m * 110);
@@ -1228,8 +1292,10 @@ void tent(float Tx = 0, float Ty = 0, float m = 3)
     glEnd();
 
     //Front
+    if(night) glColor3ub (158, 102, 43); ///if night is true then color will change in night mode, repeat for boat
+    else  glColor3ub (255,180,100); ///if night is false then color will be the same in day
     glBegin(GL_POLYGON);
-    glColor3ub (255,180,100);
+    //glColor3ub (255,180,100);
     glVertex2f(Tx + m * 200, Ty + m * 170);
     glVertex2f(Tx + m * 160, Ty + m * 100);
     glVertex2f(Tx + m * 167, Ty + m * 99);
@@ -1237,56 +1303,56 @@ void tent(float Tx = 0, float Ty = 0, float m = 3)
     glEnd();
 }
 
-void tree(float Tx, float Ty, float m =1, float n=1.2)
+void tree(float Tx, float Ty, float m = 1, float n = 1.2)
 {
     //tree
     glBegin(GL_QUADS);
     glColor3ub(48, 16, 16);
-    glVertex2f(Tx+m*107, Ty+m*n*120);
-    glVertex2f(Tx+m*123, Ty+m*n*120);
-    glVertex2f(Tx+m*123, Ty+m*n*150);
-    glVertex2f(Tx+m*107, Ty+m*n*150);
+    glVertex2f(Tx + m * 107, Ty + m * n * 120);
+    glVertex2f(Tx + m * 123, Ty + m * n * 120);
+    glVertex2f(Tx + m * 123, Ty + m * n * 150);
+    glVertex2f(Tx + m * 107, Ty + m * n * 150);
     glEnd();
 
     glBegin(GL_TRIANGLES);
     glColor3ub(4, 66, 20);
-    glVertex2f(Tx+m*65, Ty+m*n*150);
-    glVertex2f(Tx+m*165, Ty+m*n*150);
-    glVertex2f(Tx+m*115, Ty+m*n*250);
+    glVertex2f(Tx + m * 65, Ty + m * n * 150);
+    glVertex2f(Tx + m * 165, Ty + m * n * 150);
+    glVertex2f(Tx + m * 115, Ty + m * n * 250);
     glEnd();
 
     glBegin(GL_TRIANGLES);
     glColor3ub(4, 87, 26);
-    glVertex2f(Tx+m*75, Ty+m*n*190);
-    glVertex2f(Tx+m*155, Ty+m*n*190);
-    glVertex2f(Tx+m*115, Ty+m*n*255);
+    glVertex2f(Tx + m * 75, Ty + m * n * 190);
+    glVertex2f(Tx + m * 155, Ty + m * n * 190);
+    glVertex2f(Tx + m * 115, Ty + m * n * 255);
     glEnd();
     glBegin(GL_TRIANGLES);
     glColor3ub(4, 117, 34);
-    glVertex2f(Tx+m*90, Ty+m*n*230);
-    glVertex2f(Tx+m*140, Ty+m*n*230);
-    glVertex2f(Tx+m*115, Ty+m*n*275);
+    glVertex2f(Tx + m * 90, Ty + m * n * 230);
+    glVertex2f(Tx + m * 140, Ty + m * n * 230);
+    glVertex2f(Tx + m * 115, Ty + m * n * 275);
     glEnd();
 }
 
-void far_forest(float Tx=0, float Ty=0, float m=1)
+void far_forest(float Tx = 0, float Ty = 0, float m = 1)
 {
-    tree(Tx+15, Ty+25, 0.36*m);
-    tree(Tx+-25, Ty+25, 0.4*m);
-    tree(Tx+0, Ty+20, 0.3*m);
-    tree(Tx+50, Ty+20, 0.35*m);
-    tree(Tx+40, Ty+10, 0.3*m);
-    tree(Tx+25, Ty+15, 0.22*m);
-    tree(Tx+-60, Ty+30, 0.33*m);
-    tree(Tx+-40, Ty+20, 0.3*m);
-    tree(Tx+-20, Ty+15, 0.26*m);
-    tree(Tx+-60, Ty+10, 0.28*m);
-    tree(Tx+-35, Ty+7, 0.22*m);
-    tree(Tx+0, Ty+10, 0.22*m);
-    tree(Tx+65, Ty+4, 0.27*m);
+    tree(Tx + 15, Ty + 25, 0.36 * m);
+    tree(Tx + -25, Ty + 25, 0.4 * m);
+    tree(Tx + 0, Ty + 20, 0.3 * m);
+    tree(Tx + 50, Ty + 20, 0.35 * m);
+    tree(Tx + 40, Ty + 10, 0.3 * m);
+    tree(Tx + 25, Ty + 15, 0.22 * m);
+    tree(Tx + -60, Ty + 30, 0.33 * m);
+    tree(Tx + -40, Ty + 20, 0.3 * m);
+    tree(Tx + -20, Ty + 15, 0.26 * m);
+    tree(Tx + -60, Ty + 10, 0.28 * m);
+    tree(Tx + -35, Ty + 7, 0.22 * m);
+    tree(Tx + 0, Ty + 10, 0.22 * m);
+    tree(Tx + 65, Ty + 4, 0.27 * m);
 }
 
-void plane(float Tx, float Ty, float m=1)
+void plane(float Tx, float Ty, float m = 1)
 {
     glBegin(GL_POLYGON);
     glColor3ub(0, 104, 156);
@@ -1320,23 +1386,36 @@ void plane(float Tx, float Ty, float m=1)
 
 void cloud1(float Tx, float Ty, float m=1)
 {
+    ///if night is true then day else colour change at night
+    ///repeat for other clouds
+    if(night) glColor3ub(0,188,233);
+    else glColor3ub(255,255,255);
+
+    glPushMatrix();
     //cloud
     circle(Tx + m * 16, Ty + m * 20, 15, 15);
     circle(Tx + m * 29, Ty + m * 31, 9, 9);
     circle(Tx + m * 58, Ty + m * 30, 27, 27);
     circle(Tx + m * 85, Ty + m * 21, 20, 20);
+    glPopMatrix();
 
+    glPushMatrix();
     glBegin(GL_QUADS);
-    glColor3ub(255, 255, 255);
     glVertex2f(Tx+m*17, Ty+m*23);
     glVertex2f(Tx+m*85, Ty+m*23);
     glVertex2f(Tx+m*85, Ty+m*1);
     glVertex2f(Tx+m*17, Ty+m*5);
     glEnd();
+    glPopMatrix();
 }
+
 
 void cloud2(float Tx, float Ty, float m=1)
 {
+    if(night) glColor3ub(0,188,233);
+    else glColor3ub(255,255,255);
+
+    glPushMatrix();
     //cloud
     circle(Tx + m * 13, Ty + m * 16, 7, 7);
     circle(Tx + m * 24, Ty + m * 24, 9, 9);
@@ -1348,26 +1427,33 @@ void cloud2(float Tx, float Ty, float m=1)
     circle(Tx + m * 122, Ty + m * 31, 10, 10);
     circle(Tx + m * 132, Ty + m * 25, 10, 10);
     circle(Tx + m * 144, Ty + m * 16, 6, 6);
+    glPopMatrix();
 
+
+    glPushMatrix();
     glBegin(GL_QUADS);
-    glColor3ub(255,255,255);
+    //glColor3ub(255,255,255);
     glVertex2f(Tx+m*12, Ty+m*18);
     glVertex2f(Tx+m*146, Ty+m*18);
     glVertex2f(Tx+m*146, Ty+m*11);
     glVertex2f(Tx+m*11, Ty+m*10);
     glEnd();
+    glPopMatrix();
 
+    glPushMatrix();
     glBegin(GL_QUADS);
     glVertex2f(Tx+m*20, Ty+m*32);
     glVertex2f(Tx+m*138, Ty+m*32);
     glVertex2f(Tx+m*138, Ty+m*17);
     glVertex2f(Tx+m*20, Ty+m*17);
     glEnd();
+    glPopMatrix();
 
 }
 
 void cloud3(float Tx, float Ty, float m=1)
 {
+
     circle(Tx + m * 23, Ty + m * 33, 21, 21);
     circle(Tx + m * 50, Ty + m * 49, 20, 20);
     circle(Tx + m * 80, Ty + m * 43, 14, 14);
@@ -1381,45 +1467,38 @@ void wood(float Tx = 0, float Ty = 0)
 {
     //Back wood
     glBegin(GL_POLYGON);
-    glColor3ub(141,103,58);
-    glVertex2f(Tx+606,Ty+50);
-    glVertex2f(Tx+694,Ty+75);
-    glVertex2f(Tx+700,Ty+74);
-    glVertex2f(Tx+702,Ty+71);
-    glVertex2f(Tx+704,Ty+65);
-    glVertex2f(Tx+701,Ty+58);
-    glVertex2f(Tx+608,Ty+29);
+    glColor3ub(141, 103, 58);
+    glVertex2f(Tx + 606, Ty + 50);
+    glVertex2f(Tx + 694, Ty + 75);
+    glVertex2f(Tx + 700, Ty + 74);
+    glVertex2f(Tx + 702, Ty + 71);
+    glVertex2f(Tx + 704, Ty + 65);
+    glVertex2f(Tx + 701, Ty + 58);
+    glVertex2f(Tx + 608, Ty + 29);
     glEnd();
 
     //Front wood
     glBegin(GL_POLYGON);
-    glColor3ub(171,123,74);
-    glVertex2f(Tx+700,Ty+50);
-    glVertex2f(Tx+610,Ty+75);
-    glVertex2f(Tx+606,Ty+75);
-    glVertex2f(Tx+601,Ty+70);
-    glVertex2f(Tx+601,Ty+63);
-    glVertex2f(Tx+606,Ty+55);
-    glVertex2f(Tx+694,Ty+29);
+    glColor3ub(171, 123, 74);
+    glVertex2f(Tx + 700, Ty + 50);
+    glVertex2f(Tx + 610, Ty + 75);
+    glVertex2f(Tx + 606, Ty + 75);
+    glVertex2f(Tx + 601, Ty + 70);
+    glVertex2f(Tx + 601, Ty + 63);
+    glVertex2f(Tx + 606, Ty + 55);
+    glVertex2f(Tx + 694, Ty + 29);
     glEnd();
 
-    glColor3ub(141,103,58);
-    circle(Tx+697,Ty+40,5,10);
-    circle(Tx+607,Ty+40,5,10);
+    glColor3ub(141, 103, 58);
+    circle(Tx + 697, Ty + 40, 5, 10);
+    circle(Tx + 607, Ty + 40, 5, 10);
 }
 
-GLint plane_position = 0;
-GLint boat_position = 0;
-GLint boat_far_position = 0;
-GLint sun_position = 0;
 
-GLint cloud1_position = 0;
-GLint cloud2_position = 0;
-GLint cloud3_position = 0;
 
 void cloud1_motion(int value)
 {
-    if(cloud1_position < -2000)
+    if (cloud1_position < -2000)
         cloud1_position = 1920;
 
     cloud1_position -= 2;
@@ -1429,7 +1508,7 @@ void cloud1_motion(int value)
 
 void cloud2_motion(int value)
 {
-    if(cloud2_position > 2100)
+    if (cloud2_position > 2100)
         cloud2_position = -100;
 
     cloud2_position += 1;
@@ -1439,7 +1518,7 @@ void cloud2_motion(int value)
 
 void cloud3_motion(int value)
 {
-    if(cloud3_position < -2000)
+    if (cloud3_position < -2000)
         cloud3_position = 1920;
 
     cloud3_position -= 1;
@@ -1449,37 +1528,37 @@ void cloud3_motion(int value)
 
 void plane_motion(int value)
 {
-    if(plane_position > 2100)
+    if (plane_position > 2100)
         plane_position = -100;
 
-    plane_position += 10;
+    plane_position += plane_speed;
     glutPostRedisplay();
     glutTimerFunc(30, plane_motion, 0);
 }
 
 void boat_motion(int value)
 {
-    if(boat_position > 2100)
+    if (boat_position > 2100)
         boat_position = -150;
 
-    boat_position += 6;
+    boat_position += boat_speed;
     glutPostRedisplay();
     glutTimerFunc(30, boat_motion, 0);
 }
 
 void boat_far_motion(int value)
 {
-    if(boat_far_position < -2000)
+    if (boat_far_position < -2000)
         boat_far_position = -150;
 
-    boat_far_position -= 2;
+    boat_far_position -= boat_far_speed;
     glutPostRedisplay();
     glutTimerFunc(30, boat_far_motion, 0);
 }
 
 void sun_motion(int value)
 {
-    if(sun_position > 100)
+    if (sun_position > 100)
         sun_position = 100;
 
     sun_position += 1;
@@ -1487,28 +1566,24 @@ void sun_motion(int value)
     glutTimerFunc(30, sun_motion, 0);
 }
 
-float _rain = 0.0f;
-bool rainday = false;
-bool night = false;
-
 void Rain(int value)
 {
 
-    if(rainday)
+    if (rainday)
     {
 
         _rain += 0.01f;
 
         glBegin(GL_POINTS);
-        for(int i=1; i<=1000; i++)
+        for (int i = 1; i <= 1000; i++)
         {
-            int x=rand(), y=rand();
-            x%=1920;
-            y%=1080;
+            int x = rand(), y = rand();
+            x %= 1920;
+            y %= 1080;
             glBegin(GL_LINES);
             glColor3f(1.0, 1.0, 1.0);
-            glVertex2d(x,y);
-            glVertex2d(x+5,y+5);
+            glVertex2d(x, y);
+            glVertex2d(x + 5, y + 5);
             glEnd();
         }
 
@@ -1521,7 +1596,7 @@ void Rain(int value)
 void Night()
 {
 
-    if(night)
+    if (night)
     {
         sky_night();
     }
@@ -1544,9 +1619,27 @@ void myKeyboard(unsigned char key, int x, int y)
         rainday = false;
         night = false;
         break;
+    case 'b':
+        boat_speed+=5;
+        break;
+    case 'v':
+        boat_speed -= 5;
+        break;
+    case 'f':
+        boat_far_speed += 2;
+        break;
+    case 'd':
+        boat_far_speed -= 2;
+        break;
+    case 'p':
+        plane_speed += 5;
+        break;
+    case 'o':
+        plane_speed -= 5;
+        break;
 
     case 27:
-        exit(0);
+        //exit(0);
         break;
 
     default:
@@ -1556,15 +1649,15 @@ void myKeyboard(unsigned char key, int x, int y)
 
 void myDisplay(void)
 {
-    glClear (GL_COLOR_BUFFER_BIT);
-    if(night == false)
+    glClear(GL_COLOR_BUFFER_BIT);
+    if (night == false)
     {
         sky();
     }
 
     ///------------------------------
     glPushMatrix();
-    glTranslatef(0.0f,sun_position, 0.0f);
+    glTranslatef(0.0f, sun_position, 0.0f);
     glColor3ub(225, 255, 0);
     circle(1190, 610, 70, 70);
     glPopMatrix();
@@ -1594,7 +1687,7 @@ void myDisplay(void)
 
     ///------------------------------
     glPushMatrix();
-    glTranslatef(plane_position,0.0f, 0.0f);
+    glTranslatef(plane_position, 0.0f, 0.0f);
     plane(-100, 900);
     glPopMatrix();
     ///------------------------------
@@ -1635,26 +1728,26 @@ void myDisplay(void)
 
     ///------------------------------
     glPushMatrix();
-    glTranslatef(boat_far_position,0.0f, 0.0f);
+    glTranslatef(boat_far_position, 0.0f, 0.0f);
     boat(2000, 390, 0.5);
     glPopMatrix();
     ///------------------------------
 
     ///------------------------------
     glPushMatrix();
-    glTranslatef(boat_position,0.0f, 0.0f);
+    glTranslatef(boat_position, 0.0f, 0.0f);
     boat(-200, 300);
     glPopMatrix();
     ///------------------------------
 
     //Front Left
-    tree(100,0,1.3);
-    tree(-70,-40,1.4);
-    tree(-70,-95,1);
-    tree(10,-120,1.3);
-    tree(90,-140,1.2);
-    tree(30,-90,0.7);
-    tree(230,00,0.7);
+    tree(100, 0, 1.3);
+    tree(-70, -40, 1.4);
+    tree(-70, -95, 1);
+    tree(10, -120, 1.3);
+    tree(90, -140, 1.2);
+    tree(30, -90, 0.7);
+    tree(230, 00, 0.7);
 
     //Front Right
     tree(1530, 0, 1.3, 1);
@@ -1667,12 +1760,12 @@ void myDisplay(void)
     tree(1580, -80, 0.7, 1);
 
     wood(350, 40);
-
+    fire(925, 90);
     tent(150, -170);
-    glFlush ();
+    glFlush();
 }
 
-void myInit (void)
+void myInit(void)
 {
     glClearColor(0.0, 0.0, 0.0, 0.0);
     glMatrixMode(GL_PROJECTION);
@@ -1682,16 +1775,22 @@ void myInit (void)
 
 int main(int argc, char** argv)
 {
-    cout << "For Night Scene  : press 'N'" << endl;
-    cout << "For Rain         : press 'R'" << endl;
-    cout << "Stop All Effects : press 'S'" << endl;
+    cout << "For Night Scene     : press 'N'" << endl;
+    cout << "For Rain            : press 'R'" << endl;
+    cout << "Speed UP Plane      : press 'P'" << endl;
+    cout << "Speed Down Plane    : press 'O'" << endl;
+    cout << "Speed up Boat       : press 'B'" << endl;
+    cout << "Slow Down Boat      : press 'V'" << endl;
+    cout << "Speed up Far Boat   : press 'F'" << endl;
+    cout << "Slow Down Far Boat  : press 'D'" << endl;
+    cout << "Stop All Effects    : press 'S'" << endl;
 
 
     glutInit(&argc, argv);
-    glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB);
-    glutInitWindowSize (1920, 1080);
-    glutInitWindowPosition (0, 0);
-    glutCreateWindow ("Scenery of a Mountain");
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(1920, 1080);
+    glutInitWindowPosition(0, 0);
+    glutCreateWindow("Scenery of a Mountain");
     glutDisplayFunc(myDisplay);
     myInit();
     glutKeyboardFunc(myKeyboard);
